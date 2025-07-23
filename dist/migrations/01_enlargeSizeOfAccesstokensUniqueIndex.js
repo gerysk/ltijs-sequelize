@@ -22,7 +22,6 @@ const up = async ({
     console.error('Database migration failed', err);
   }
 };
-
 const down = async ({
   context: queryInterface
 }) => {
@@ -41,7 +40,6 @@ const down = async ({
     unique: true
   });
 };
-
 module.exports = {
   up,
   down

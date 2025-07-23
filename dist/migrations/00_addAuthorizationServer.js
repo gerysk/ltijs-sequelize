@@ -1,7 +1,6 @@
 "use strict";
 
 const Sequelize = require('sequelize');
-
 const up = async ({
   context: queryInterface
 }) => {
@@ -11,13 +10,11 @@ const up = async ({
     defaultValue: null
   });
 };
-
 const down = async ({
   context: queryInterface
 }) => {
   await queryInterface.removeColumn('platforms', 'authorizationServer');
 };
-
 module.exports = {
   up,
   down

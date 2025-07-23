@@ -1,4 +1,3 @@
-
 const Sequelize = require('sequelize')
 
 const up = async ({ context: queryInterface }) => {
