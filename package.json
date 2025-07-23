@@ -1,6 +1,6 @@
 {
   "name": "ltijs-sequelize",
-  "version": "2.4.4",
+  "version": "1.0.1",
   "description": "Ltijs Sequelize Database Plugin",
   "main": "index.js",
   "engineStrict": true,
@@ -9,12 +9,12 @@
   },
   "scripts": {
     "test": "mocha",
-    "build": "standard 'src/**/*.js' --fix && babel src -d dist",
+    "build": "standard \"src/**/*.js\" --fix && babel src -d dist",
     "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Cvmcosta/ltijs-sequelize.git"
+    "url": "git+https://github.com/gerysk/ltijs-sequelize.git"
   },
   "keywords": [
     "ltijs",
@@ -26,12 +26,9 @@
     "provider",
     "ims"
   ],
-  "author": "cvmcosta",
+  "author": "gerysk",
   "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/Cvmcosta/ltijs-sequelize/issues"
-  },
-  "homepage": "https://github.com/Cvmcosta/ltijs-sequelize#readme",
+  "homepage": "https://github.com/gerysk/ltijs-sequelize#readme",
   "dependencies": {
     "@babel/runtime": "^7.14.5",
     "debug": "^4.3.1",

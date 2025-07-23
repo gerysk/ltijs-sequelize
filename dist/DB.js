@@ -35,6 +35,8 @@ var _sequelize = /*#__PURE__*/new WeakMap();
 
 var _Models = /*#__PURE__*/new WeakMap();
 
+var _setup = /*#__PURE__*/new WeakMap();
+
 var _deploy = /*#__PURE__*/new WeakMap();
 
 var _dialect = /*#__PURE__*/new WeakMap();
@@ -54,12 +56,19 @@ class Database {
    * @param {Object} options - Sequelize options
    */
   constructor(database, user, pass, options) {
+    var _options$setup;
+
     _sequelize.set(this, {
       writable: true,
       value: void 0
     });
 
     _Models.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _setup.set(this, {
       writable: true,
       value: void 0
     });
@@ -138,6 +147,7 @@ class Database {
       }
     });
 
+    (0, _classPrivateFieldSet2.default)(this, _setup, (_options$setup = options.setup) !== null && _options$setup !== void 0 ? _options$setup : true);
     (0, _classPrivateFieldSet2.default)(this, _sequelize, new Sequelize(database, user, pass, options));
     (0, _classPrivateFieldSet2.default)(this, _dialect, options.dialect);
     (0, _classPrivateFieldSet2.default)(this, _Models, {
@@ -448,28 +458,32 @@ class Database {
     provDatabaseDebug('Using Sequelize Database Plugin - Cvmcosta');
     provDatabaseDebug('Dialect: ' + (0, _classPrivateFieldGet2.default)(this, _dialect));
     const sequelize = (0, _classPrivateFieldGet2.default)(this, _sequelize);
-    await sequelize.authenticate(); // Sync models to database, creating tables if they do not exist
+    await sequelize.authenticate();
 
-    await sequelize.sync(); // Run migrations
+    if ((0, _classPrivateFieldGet2.default)(this, _setup)) {
+      // Sync models to database, creating tables if they do not exist
+      await sequelize.sync(); // Run migrations
 
-    provDatabaseDebug('Performing migrations');
-    const umzug = new Umzug({
-      migrations: {
-        glob: path.join(__dirname, 'migrations') + '/*.js'
-      },
-      context: sequelize.getQueryInterface(),
-      storage: new SequelizeStorage({
-        sequelize
-      }),
-      logger: console
-    });
-    await umzug.up(); // Setting up database cleanup cron jobs
+      provDatabaseDebug('Performing migrations');
+      const umzug = new Umzug({
+        migrations: {
+          glob: path.join(__dirname, 'migrations') + '/*.js'
+        },
+        context: sequelize.getQueryInterface(),
+        storage: new SequelizeStorage({
+          sequelize
+        }),
+        logger: console
+      });
+      await umzug.up(); // Setting up database cleanup cron jobs
 
-    await (0, _classPrivateFieldGet2.default)(this, _databaseCleanup).call(this);
-    (0, _classPrivateFieldSet2.default)(this, _cronJob, cron.schedule('0 */1 * * *', async () => {
       await (0, _classPrivateFieldGet2.default)(this, _databaseCleanup).call(this);
-    }));
-    (0, _classPrivateFieldGet2.default)(this, _cronJob).start();
+      (0, _classPrivateFieldSet2.default)(this, _cronJob, cron.schedule('0 */1 * * *', async () => {
+        await (0, _classPrivateFieldGet2.default)(this, _databaseCleanup).call(this);
+      }));
+      (0, _classPrivateFieldGet2.default)(this, _cronJob).start();
+    }
+
     (0, _classPrivateFieldSet2.default)(this, _deploy, true);
     return true;
   } // Closes connection to the database

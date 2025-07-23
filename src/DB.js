@@ -55,8 +55,8 @@ class Database {
    * @param {String} pass - Auth password
    * @param {Object} options - Sequelize options
    */
-  constructor(database, user, pass, options) {
-    this.#setup = options.setup ?? true;
+  constructor (database, user, pass, options) {
+    this.#setup = options.setup ?? true
     this.#sequelize = new Sequelize(database, user, pass, options)
     this.#dialect = options.dialect
     this.#Models = {
@@ -114,17 +114,17 @@ class Database {
         roles: this.#dialect === 'postgres'
           ? { type: Sequelize.ARRAY(Sequelize.TEXT) }
           : {
-            type: Sequelize.TEXT,
+              type: Sequelize.TEXT,
             get() { // eslint-disable-line
-              const roles = this.getDataValue('roles')
-              if (roles) return roles.split(';')
-              return null
-            },
+                const roles = this.getDataValue('roles')
+                if (roles) return roles.split(';')
+                return null
+              },
             set(val) { // eslint-disable-line
-              if (val) this.setDataValue('roles', val.join(';'))
-              else this.setDataValue('roles', null)
-            }
-          },
+                if (val) this.setDataValue('roles', val.join(';'))
+                else this.setDataValue('roles', null)
+              }
+            },
         targetLinkUri: {
           type: Sequelize.TEXT
         },
@@ -359,7 +359,7 @@ class Database {
   /**
    * @description Opens connection to database
    */
-  async setup() {
+  async setup () {
     provDatabaseDebug('Using Sequelize Database Plugin - Cvmcosta')
     provDatabaseDebug('Dialect: ' + this.#dialect)
     const sequelize = this.#sequelize
@@ -391,7 +391,7 @@ class Database {
   }
 
   // Closes connection to the database
-  async Close() {
+  async Close () {
     // Stopping cronjobs and connection to postgresql
     if (this.#cronJob) {
       provDatabaseDebug('Stopping and removing cronjob')
@@ -411,7 +411,7 @@ class Database {
      * @param {String} table - The name of the table from where to query
      * @param {Object} [info] - Info for the item being searched for in the format {col1: "value1"}.
      */
-  async Get(ENCRYPTIONKEY, table, info) {
+  async Get (ENCRYPTIONKEY, table, info) {
     if (!this.#deploy) throw new Error('PROVIDER_NOT_DEPLOYED')
     if (!table) throw new Error('MISSING_PARAMETER')
 
@@ -451,7 +451,7 @@ class Database {
      * @param {Object} item - The item Object you want to insert in the database.
      * @param {Object} [index] - Key that should be used as index in case of Encrypted document.
      */
-  async Insert(ENCRYPTIONKEY, table, item, index) {
+  async Insert (ENCRYPTIONKEY, table, item, index) {
     if (!this.#deploy) throw new Error('PROVIDER_NOT_DEPLOYED')
     if (!table || !item || (ENCRYPTIONKEY && !index)) throw new Error('MISSING_PARAMS')
 
@@ -478,7 +478,7 @@ class Database {
    * @param {Object} item - The item Object you want to insert in the database.
    * @param {Object} [index] - Key that should be used as index in case of Encrypted document.
    */
-  async Replace(ENCRYPTIONKEY, table, info, item, index) {
+  async Replace (ENCRYPTIONKEY, table, info, item, index) {
     if (!this.#deploy) throw new Error('PROVIDER_NOT_DEPLOYED')
     if (!table || !item || (ENCRYPTIONKEY && !index)) throw new Error('MISSING_PARAMS')
 
@@ -505,7 +505,7 @@ class Database {
      * @param {Object} info - Info for the item being modified in the format {col1: "value1"}.
      * @param {Object} modification - The modification you want to make in the format {col1: "value2"}.
      */
-  async Modify(ENCRYPTIONKEY, table, info, modification) {
+  async Modify (ENCRYPTIONKEY, table, info, modification) {
     if (!this.#deploy) throw new Error('PROVIDER_NOT_DEPLOYED')
     // Parameter check
     if (!table || !info || !modification) throw new Error('MISSING_PARAMS')
@@ -531,7 +531,7 @@ class Database {
      * @param {String} table - The name of the table from where to query
      * @param {Object} [info] - Info for the item being deleted in the format {col1: "value1"}.
      */
-  async Delete(table, info) {
+  async Delete (table, info) {
     if (!this.#deploy) throw new Error('PROVIDER_NOT_DEPLOYED')
     // Parameter check
     if (!table || !info) throw new Error('Missing argument.')
@@ -546,7 +546,7 @@ class Database {
    * @param {String} data - Data to be encrypted
    * @param {String} secret - Secret used in the encryption
    */
-  async Encrypt(data, secret) {
+  async Encrypt (data, secret) {
     const hash = crypto.createHash('sha256')
     hash.update(secret)
     const key = hash.digest().slice(0, 32)
@@ -563,7 +563,7 @@ class Database {
    * @param {String} _iv - Encryption iv
    * @param {String} secret - Secret used in the encryption
    */
-  async Decrypt(data, _iv, secret) {
+  async Decrypt (data, _iv, secret) {
     const hash = crypto.createHash('sha256')
     hash.update(secret)
     const key = hash.digest().slice(0, 32)
