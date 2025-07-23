@@ -1,7 +1,7 @@
 {
   "name": "@gerysk/ltijs-sequelize-gerysk",
-  "version": "1.0.2",
-  "description": "Ltijs Sequelize Database Plugin",
+  "version": "1.0.3",
+  "description": "Ltijs Sequelize Database Plugin - Forked",
   "main": "index.js",
   "engineStrict": true,
   "engines": {
