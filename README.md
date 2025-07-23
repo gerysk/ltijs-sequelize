@@ -1,6 +1,7 @@
 ## Introduction
 
 This package allows [Ltijs](https://cvmcosta.github.io/ltijs) to work with the databases supported by [Sequelize](https://sequelize.org/master/).
+This is a forked package that fixes some critical issues from the original. It is meant for personal use. Feel free to use/fork but don't expect a lot of maintenance.
 
 #### Tested with:
 
